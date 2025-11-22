@@ -21,6 +21,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { signupSchema } from "@/lib/validations/auth";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 function Signup() {
   const form = useForm({
@@ -28,6 +35,7 @@ function Signup() {
     defaultValues: {
       name: "",
       email: "",
+      role: "",
       password: "",
       confirmPassword: "",
     },
@@ -78,6 +86,31 @@ function Signup() {
                         placeholder="name@example.com"
                         {...field}
                       />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="role"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>الدور</FormLabel>
+                    <FormControl>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <SelectTrigger className="w-full flex items-center ">
+                          <SelectValue placeholder="اختر دورك" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="user">مستخدم</SelectItem>
+                          <SelectItem value="pharmacy">صيدلية</SelectItem>
+                        </SelectContent>
+                      </Select>
                     </FormControl>
                     <FormMessage />
                   </FormItem>

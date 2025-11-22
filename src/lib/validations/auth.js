@@ -27,6 +27,9 @@ export const signupSchema = z
       .string()
       .min(1, "البريد الإلكتروني مطلوب")
       .email("البريد الإلكتروني غير صحيح"),
+    role: z.enum(["user", "pharmacy"], {
+      required_error: "الدور مطلوب",
+    }),
     password: z
       .string()
       .min(1, "كلمة المرور مطلوبة")
@@ -58,4 +61,3 @@ export const verifySchema = z.object({
     .max(6, "الكود يجب أن يكون 6 أرقام")
     .regex(/^\d+$/, "الكود يجب أن يحتوي على أرقام فقط"),
 });
-
