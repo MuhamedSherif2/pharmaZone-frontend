@@ -41,6 +41,8 @@ function Signup() {
     },
   });
 
+  console.log(form.formState.errors.role);
+
   const onSubmit = (data) => {
     // TODO: Add signup logic
     console.log("Signup:", data);

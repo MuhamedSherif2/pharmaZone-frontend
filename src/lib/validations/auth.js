@@ -27,9 +27,13 @@ export const signupSchema = z
       .string()
       .min(1, "البريد الإلكتروني مطلوب")
       .email("البريد الإلكتروني غير صحيح"),
-    role: z.enum(["user", "pharmacy"], {
-      required_error: "الدور مطلوب",
-    }),
+    role: z
+      .string({ required_error: "الدور مطلوب" })
+      .min(1, "الدور مطلوب")
+      .refine((val) => ["user", "pharmacy"].includes(val), {
+        message: "القيمة غير صحيحة، يجب أن تكون مستخدم أو صيدلية",
+      }),
+
     password: z
       .string()
       .min(1, "كلمة المرور مطلوبة")
