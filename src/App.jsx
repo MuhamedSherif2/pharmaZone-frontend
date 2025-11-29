@@ -4,20 +4,24 @@ import Login from "./pages/auth/Login";
 import Signup from "./pages/auth/Signup";
 import ForgotPassword from "./pages/auth/ForgotPassword";
 import Verify from "./pages/auth/Verify";
+import ResetPassword from "./pages/auth/reset-password";
 import Home from "./pages/Home";
 import Pharmacy from "./pages/pharmacy/category/pharmacy-category";
 import CategorySlug from "./pages/pharmacy/category/categorySlug";
 import ProductSlug from "./pages/pharmacy/product/productSlug";
+import { Toaster } from "./components/ui/sonner";
 
 function App() {
   return (
     <BrowserRouter>
+      <Toaster />
       <Routes>
         {/* Authentication Routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/verify" element={<Verify />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
 
         {/* Protected Routes */}
 

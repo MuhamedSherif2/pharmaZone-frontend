@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
@@ -23,8 +23,7 @@ import {
 import { forgotPasswordSchema } from "@/lib/validations/auth";
 
 function ForgotPassword() {
-  const [isSubmitted, setIsSubmitted] = useState(false);
-
+  const navigate = useNavigate();
   const form = useForm({
     resolver: zodResolver(forgotPasswordSchema),
     defaultValues: {
@@ -35,30 +34,8 @@ function ForgotPassword() {
   const onSubmit = (data) => {
     // TODO: Add forgot password logic
     console.log("Forgot Password:", data);
-    setIsSubmitted(true);
+    navigate("/verify");
   };
-
-  if (isSubmitted) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-background p-4">
-        <Card className="w-full max-w-md">
-          <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl font-bold text-center">
-              تم إرسال الرابط
-            </CardTitle>
-            <CardDescription className="text-center">
-              تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني
-            </CardDescription>
-          </CardHeader>
-          <CardFooter className="flex flex-col space-y-4">
-            <Button asChild className="w-full" size="lg">
-              <Link to="/login">العودة لتسجيل الدخول</Link>
-            </Button>
-          </CardFooter>
-        </Card>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-4">

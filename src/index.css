@@ -198,3 +198,7 @@
     direction: ltr;
   }
 }
+
+input {
+  @apply placeholder:text-gray-600;
+}
