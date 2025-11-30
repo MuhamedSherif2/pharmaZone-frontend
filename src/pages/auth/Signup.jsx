@@ -130,7 +130,33 @@ function Signup() {
   };
 
   const onSubmit = (data) => {
-    console.log("Signup data:", data);
+    const {
+      name,
+      email,
+      phone,
+      password,
+      location,
+      startTime,
+      endTime,
+      work24h,
+    } = data;
+    const workPeriod = work24h ? null : { startTime, endTime };
+
+    const user = {
+      name,
+      email,
+      phone,
+      password,
+    };
+    const pharmacy = {
+      location,
+      work24h,
+      ...workPeriod,
+    };
+
+    console.log("user:", user);
+    console.log("pharmacy:", pharmacy);
+
     toast.success("تم إنشاء الحساب بنجاح!");
     // TODO: Add API call
     // navigate("/verify");

@@ -12,6 +12,8 @@ export const loginSchema = z.object({
     .min(6, "كلمة المرور يجب أن تكون 6 أحرف على الأقل"),
 });
 
+// create account (register)
+
 const baseSignupSchema = z.object({
   name: z.string().min(2, "الاسم قصير جدًا"),
   email: z.string().email("البريد الإلكتروني غير صحيح"),
