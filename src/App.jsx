@@ -6,15 +6,18 @@ import ForgotPassword from "./pages/auth/ForgotPassword";
 import Verify from "./pages/auth/Verify";
 import ResetPassword from "./pages/auth/reset-password";
 import Home from "./pages/Home";
+
 import Pharmacy from "./pages/pharmacy/category/pharmacy-category";
 import CategorySlug from "./pages/pharmacy/category/categorySlug";
 import ProductSlug from "./pages/pharmacy/product/productSlug";
-import { Toaster } from "./components/ui/sonner";
+import NavBar from "./components/NavBar";
+
 
 function App() {
   return (
     <BrowserRouter>
-      <Toaster />
+
+      <NavBar />
       <Routes>
         {/* Authentication Routes */}
         <Route path="/login" element={<Login />} />

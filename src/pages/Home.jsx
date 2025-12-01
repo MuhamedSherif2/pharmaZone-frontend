@@ -7,23 +7,15 @@ function Home() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    // TODO: Add logout logic
     console.log("Logout");
     navigate("/login");
   };
 
   return (
-    <div className="min-h-screen bg-background p-4">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold">الصفحة الرئيسية</h1>
-          <Button variant="outline" onClick={handleLogout}>
-            تسجيل الخروج
-          </Button>
-        </div>
-
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          <Card>
+    <section className="min-h-screen p-4 bg-[url(/background.png)] bg-cover bg-center bg-scroll bg-no-repeat flex items-center justify-center">
+      <div className="container mx-auto flex items-center justify-center">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 w-full max-w-6xl">
+          <Card className="hover:shadow-lg transition-all duration-300">
             <CardHeader>
               <CardTitle>مرحباً بك في PharmaZone</CardTitle>
               <CardDescription>
@@ -37,7 +29,7 @@ function Home() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="hover:shadow-lg transition-all duration-300">
             <CardHeader>
               <CardTitle>المميزات</CardTitle>
               <CardDescription>
@@ -54,7 +46,7 @@ function Home() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="hover:shadow-lg transition-all duration-300">
             <CardHeader>
               <CardTitle>إحصائيات سريعة</CardTitle>
               <CardDescription>
@@ -80,9 +72,8 @@ function Home() {
           </Card>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 
 export default Home;
-
