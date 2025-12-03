@@ -85,7 +85,7 @@ export default function CategorySlug() {
                 >
                   {product.name}
                 </h3>
-                <p className="text-gray-600 text-sm mb-4 flex-grow line-clamp-3">
+                <p className="text-gray-600 text-sm mb-4 grow line-clamp-3">
                   {product.description}
                 </p>
                 <div className="flex items-center justify-between mt-2">
