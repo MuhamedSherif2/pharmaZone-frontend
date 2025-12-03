@@ -11,6 +11,7 @@ import Pharmacy from "./pages/pharmacy/category/pharmacy-category";
 import CategorySlug from "./pages/pharmacy/category/categorySlug";
 import ProductSlug from "./pages/pharmacy/product/productSlug";
 import NavBar from "./components/NavBar";
+import Cart from "./pages/pharmacy/Cart";
 
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
         {/* Protected Routes */}
 
         <Route path="/home" element={<Home />} />
+        <Route path='/cart' element={<Cart />} />
 
         {/* Pharmacy Routes */}
         <Route path="/pharmacy/category" element={<Pharmacy />} />

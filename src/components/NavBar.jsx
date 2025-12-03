@@ -7,9 +7,9 @@ function NavBar() {
 
     const links = [
         { id: 1, name: 'الرئيسية', link: '/' },
-        { id: 2, name: 'المنتجات', link: '/products' },
+        { id: 2, name: 'المنتجات', link: '/pharmacy/category' },
         { id: 3, name: 'من نحن', link: '/about' },
-        { id: 4, name: 'الخدمات', link: '/services' },
+        { id: 4, name: 'السلة', link: '/cart' },
         { id: 5, name: 'اتصل بنا', link: '/contact' }
     ]
 

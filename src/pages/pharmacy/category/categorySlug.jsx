@@ -2,13 +2,14 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
-
+import { useCartStore } from "@/store/cartStore"; // ← إضافة هذا الاستيراد
 import { productsByCategory } from "@/data/products";
 
 export default function CategorySlug() {
   const { slug } = useParams();
   const navigate = useNavigate();
   const products = productsByCategory[slug] || [];
+  const { addToCart } = useCartStore(); // ← إضافة الـ store هنا
 
   const getCategoryName = (slug) => {
     switch (slug) {
@@ -29,51 +30,110 @@ export default function CategorySlug() {
     }
   };
 
+  // دالة لإضافة المنتج إلى السلة
+  const handleAddToCart = (product) => {
+    addToCart(product);
+    alert(`تمت إضافة ${product.name} إلى السلة!`);
+    // يمكن استبدال alert بـ toast message
+  };
+
   return (
-    <div className="max-w-5xl mx-auto py-10 px-4">
-      <h1 className="text-3xl font-bold mb-8 text-center">
-        {getCategoryName(slug)}
-      </h1>
+    <div className="max-w-7xl mx-auto py-10 px-4">
+      <div className="mb-8">
+        <Button
+          variant="ghost"
+          className="mb-4 hover:bg-transparent hover:text-primary p-0"
+          onClick={() => navigate("/pharmacy")}
+        >
+          &larr; العودة للمتجر
+        </Button>
+        <h1 className="text-3xl font-bold mb-2 text-right">
+          {getCategoryName(slug)}
+        </h1>
+        <p className="text-gray-600 text-right">
+          {products.length} منتج متوفر
+        </p>
+      </div>
 
       {products.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {products.map((product) => (
             <Card
               key={product.id}
-              className="flex flex-col h-full hover:shadow-lg transition-shadow pt-0"
+              className="flex flex-col h-full hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border"
             >
-              <div className="h-48 w-full bg-gray-50 relative overflow-hidden rounded-t-xl">
+              <div 
+                className="h-48 w-full bg-gray-50 relative overflow-hidden rounded-t-xl cursor-pointer"
+                onClick={() => navigate(`/pharmacy/product/${product.id}`)}
+              >
                 <img
                   src={product.image}
                   alt={product.name}
-                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                  className="w-full h-full object-contain p-4 hover:scale-105 transition-transform duration-300"
                 />
+                {/* Badge للخصم إذا كان موجود */}
+                {product.discount && (
+                  <div className="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
+                    {product.discount}%
+                  </div>
+                )}
               </div>
-              <CardContent className="grow p-4 text-right">
+              <CardContent className="grow p-4 text-right flex flex-col">
                 <h3
-                  className="text-xl font-bold mb-2 hover:underline cursor-pointer"
+                  className="text-lg font-bold mb-2 hover:text-primary cursor-pointer line-clamp-2"
                   onClick={() => navigate(`/pharmacy/product/${product.id}`)}
                 >
                   {product.name}
                 </h3>
-                <p className="text-gray-600 text-sm mb-4">
+                <p className="text-gray-600 text-sm mb-4 flex-grow line-clamp-3">
                   {product.description}
                 </p>
-                <div className="text-lg font-bold text-primary">
-                  {product.price}
+                <div className="flex items-center justify-between mt-2">
+                  <div className="text-xl font-bold text-primary">
+                    {product.price}
+                  </div>
+                  {product.originalPrice && (
+                    <div className="text-sm text-gray-400 line-through">
+                      {product.originalPrice}
+                    </div>
+                  )}
                 </div>
               </CardContent>
               <CardFooter className="p-4 pt-0">
-                <Button className="w-full" onClick={() => console.log(product)}>
-                  أضف إلى السلة
-                </Button>
+                <div className="flex gap-2 w-full">
+                  <Button 
+                    className="flex-1 cursor-pointer" 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleAddToCart(product);
+                    }}
+                  >
+                    أضف إلى السلة
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    size="icon"
+                    onClick={() => navigate(`/pharmacy/product/${product.id}`)}
+                  >
+                    👁️
+                  </Button>
+                </div>
               </CardFooter>
             </Card>
           ))}
         </div>
       ) : (
-        <div className="text-center text-gray-500 text-xl mt-10">
-          لا توجد منتجات متاحة في هذا القسم حالياً.
+        <div className="text-center py-20">
+          <div className="text-gray-400 text-6xl mb-4">🛒</div>
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">
+            لا توجد منتجات متاحة
+          </h2>
+          <p className="text-gray-600 mb-8">
+            لا توجد منتجات متاحة في هذا القسم حالياً.
+          </p>
+          <Button onClick={() => navigate("/pharmacy")}>
+            العودة للمتجر الرئيسي
+          </Button>
         </div>
       )}
     </div>
