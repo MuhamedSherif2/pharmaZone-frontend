@@ -2,14 +2,14 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useCartStore } from "@/store/cartStore"; // ← إضافة هذا الاستيراد
+import { useCartStore } from "@/store/cartStore";
 import { productsByCategory } from "@/data/products";
 
 export default function CategorySlug() {
   const { slug } = useParams();
   const navigate = useNavigate();
   const products = productsByCategory[slug] || [];
-  const { addToCart } = useCartStore(); // ← إضافة الـ store هنا
+  const { addToCart } = useCartStore();
 
   const getCategoryName = (slug) => {
     switch (slug) {
@@ -30,11 +30,9 @@ export default function CategorySlug() {
     }
   };
 
-  // دالة لإضافة المنتج إلى السلة
   const handleAddToCart = (product) => {
     addToCart(product);
     alert(`تمت إضافة ${product.name} إلى السلة!`);
-    // يمكن استبدال alert بـ toast message
   };
 
   return (
@@ -71,7 +69,6 @@ export default function CategorySlug() {
                   alt={product.name}
                   className="w-full h-full object-contain p-4 hover:scale-105 transition-transform duration-300"
                 />
-                {/* Badge للخصم إذا كان موجود */}
                 {product.discount && (
                   <div className="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
                     {product.discount}%
@@ -115,7 +112,7 @@ export default function CategorySlug() {
                     size="icon"
                     onClick={() => navigate(`/pharmacy/product/${product.id}`)}
                   >
-                    👁️
+                    المزيد
                   </Button>
                 </div>
               </CardFooter>
