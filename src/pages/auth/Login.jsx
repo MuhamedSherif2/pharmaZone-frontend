@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
@@ -21,8 +21,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { loginSchema } from "@/lib/validations/auth";
+import { userStore } from "@/store/uesrStore";
 
 function Login() {
+  const navigate = useNavigate();
+  const { login: sendUserData } = userStore();
   const form = useForm({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -31,10 +34,14 @@ function Login() {
     },
   });
 
-  const onSubmit = (data) => {
-    // TODO: Add login logic
-    console.log("Login:", data);
-    // navigate("/home");
+  const onSubmit = async (data) => {
+    try {
+      await sendUserData(data);
+
+      navigate("/home");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (

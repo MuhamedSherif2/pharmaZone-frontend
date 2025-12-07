@@ -34,6 +34,7 @@ import { MapContainer, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import { userStore } from "@/store/uesrStore";
 
 // Constants
 const STEPS = {
@@ -51,7 +52,7 @@ const DEFAULT_MAP_ZOOM = 12;
 
 function Signup() {
   const [step, setStep] = useState(STEPS.BASIC_INFO);
-
+  const { createUser } = userStore();
   const form = useForm({
     resolver: zodResolver(signupSchema),
     defaultValues: {
@@ -129,11 +130,12 @@ function Signup() {
     clearErrors("location");
   };
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const {
       name,
       email,
       phone,
+      role,
       password,
       location,
       startTime,
@@ -146,17 +148,21 @@ function Signup() {
       name,
       email,
       phone,
+      role,
       password,
     };
+
     const pharmacy = {
       location,
       work24h,
       ...workPeriod,
     };
 
-    console.log("user:", user);
-    console.log("pharmacy:", pharmacy);
-
+    const sendData = {
+      ...user,
+      ...(role === "pharmacy" && pharmacy),
+    };
+    await createUser(sendData);
     toast.success("تم إنشاء الحساب بنجاح!");
     // TODO: Add API call
     // navigate("/verify");
@@ -385,22 +391,24 @@ function PharmacyInfoStep({ form, work24h, onLocationChange }) {
       <FormField
         control={control}
         name="location"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>موقع الصيدلية على الخريطة</FormLabel>
-            <FormControl>
-              <MapContainer
-                center={DEFAULT_MAP_CENTER}
-                zoom={DEFAULT_MAP_ZOOM}
-                className="h-64 rounded-lg border"
-              >
-                <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                <MarkerComp setPosition={onLocationChange} />
-              </MapContainer>
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
+        render={() => {
+          return (
+            <FormItem>
+              <FormLabel>موقع الصيدلية على الخريطة</FormLabel>
+              <FormControl>
+                <MapContainer
+                  center={DEFAULT_MAP_CENTER}
+                  zoom={DEFAULT_MAP_ZOOM}
+                  className="h-64 rounded-lg border"
+                >
+                  <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+                  <MarkerComp setPosition={onLocationChange} />
+                </MapContainer>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          );
+        }}
       />
     </>
   );

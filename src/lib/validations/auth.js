@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { sanitizeField } from "../sanitize";
 
 // Login Schema
 export const loginSchema = z.object({
@@ -38,7 +39,9 @@ const withPasswordMatch = (schema) =>
   });
 
 const userSchema = withPasswordMatch(
-  baseSignupSchema.extend({ role: z.literal("user") })
+  baseSignupSchema
+    .extend({ role: z.literal("user") })
+    .transform((val) => sanitizeField(val))
 );
 
 const pharmacySchema = withPasswordMatch(
@@ -98,6 +101,7 @@ const pharmacySchema = withPasswordMatch(
         }
       }
     })
+    .transform((val) => (val ? sanitizeField(val) : val))
 );
 
 export const signupSchema = z.discriminatedUnion("role", [
