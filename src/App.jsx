@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { Toaster } from "sonner";
 import Login from "./pages/auth/Login";
 import Signup from "./pages/auth/Signup";
 import ForgotPassword from "./pages/auth/ForgotPassword";
@@ -12,28 +13,35 @@ import CategorySlug from "./pages/pharmacy/category/categorySlug";
 import ProductSlug from "./pages/pharmacy/product/productSlug";
 import NavBar from "./components/NavBar";
 import Cart from "./pages/pharmacy/Cart";
+import ProtectedRoute from "./components/ProtectedRoute";
+import PublicRoute from "./components/PublicRoute";
 
 function App() {
   return (
     <BrowserRouter>
       <NavBar />
+      <Toaster richColors position="bottom-right" />
       <Routes>
-        {/* Authentication Routes */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/verify" element={<Verify />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
+        {/* Authentication Routes - accessible only if NOT logged in */}
+        <Route element={<PublicRoute />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/verify" element={<Verify />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+        </Route>
 
         {/* Protected Routes */}
 
-        <Route path="/home" element={<Home />} />
-        <Route path="/cart" element={<Cart />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/home" element={<Home />} />
+          <Route path="/cart" element={<Cart />} />
 
-        {/* Pharmacy Routes */}
-        <Route path="/pharmacy/category" element={<Pharmacy />} />
-        <Route path="/pharmacy/category/:slug" element={<CategorySlug />} />
-        <Route path="/pharmacy/product/:id" element={<ProductSlug />} />
+          {/* Pharmacy Routes */}
+          <Route path="/pharmacy/category" element={<Pharmacy />} />
+          <Route path="/pharmacy/category/:slug" element={<CategorySlug />} />
+          <Route path="/pharmacy/product/:id" element={<ProductSlug />} />
+        </Route>
 
         {/* Default Route */}
         <Route path="/" element={<Navigate to="/home" replace />} />

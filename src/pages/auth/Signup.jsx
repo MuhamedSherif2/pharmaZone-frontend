@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
@@ -34,7 +34,7 @@ import { MapContainer, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { userStore } from "@/store/uesrStore";
+import { userStore } from "@/store/userStore";
 
 // Constants
 const STEPS = {
@@ -53,6 +53,7 @@ const DEFAULT_MAP_ZOOM = 12;
 function Signup() {
   const [step, setStep] = useState(STEPS.BASIC_INFO);
   const { createUser } = userStore();
+  const navigate = useNavigate();
   const form = useForm({
     resolver: zodResolver(signupSchema),
     defaultValues: {
@@ -162,10 +163,26 @@ function Signup() {
       ...user,
       ...(role === "pharmacy" && pharmacy),
     };
-    await createUser(sendData);
-    toast.success("تم إنشاء الحساب بنجاح!");
-    // TODO: Add API call
-    // navigate("/verify");
+
+    try {
+      await createUser(sendData);
+      toast.success("تم إنشاء الحساب بنجاح!");
+      navigate("/home");
+    } catch (error) {
+      console.error(error);
+      let errorMessage = "حدث خطأ أثناء إنشاء الحساب";
+
+      if (typeof error === "string") {
+        if (error.includes("Email already exists")) {
+          errorMessage = "البريد الإلكتروني مستخدم بالفعل";
+        } else if (error.includes("Network Error")) {
+          errorMessage = "فشل الاتصال بالخادم";
+        } else {
+          errorMessage = error;
+        }
+      }
+      toast.error(errorMessage);
+    }
   };
 
   // Show validation errors

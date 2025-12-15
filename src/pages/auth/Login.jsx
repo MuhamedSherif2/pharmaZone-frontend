@@ -21,7 +21,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { loginSchema } from "@/lib/validations/auth";
-import { userStore } from "@/store/uesrStore";
+import { userStore } from "@/store/userStore";
+import { toast } from "sonner";
 
 function Login() {
   const navigate = useNavigate();
@@ -37,10 +38,29 @@ function Login() {
   const onSubmit = async (data) => {
     try {
       await sendUserData(data);
-
+      toast.success("تم تسجيل الدخول بنجاح");
       navigate("/home");
     } catch (error) {
       console.error(error);
+      let errorMessage = "حدث خطأ أثناء تسجيل الدخول";
+
+      if (typeof error === "string") {
+        if (
+          error.includes("Invalid credentials") ||
+          error.includes("User not found") ||
+          error.includes("password") ||
+          error.includes("password is not defined") ||
+          error
+        ) {
+          errorMessage = "البريد الإلكتروني أو كلمة المرور غير صحيحة";
+        } else if (error.includes("Network Error")) {
+          errorMessage = "فشل الاتصال بالخادم، يرجى التحقق من الإنترنت";
+        } else {
+          errorMessage = error; // Fallback to server message if unknown
+        }
+      }
+
+      toast.error(errorMessage);
     }
   };
 

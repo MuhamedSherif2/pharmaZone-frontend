@@ -18,11 +18,16 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useNavigate } from "react-router-dom";
+import { resetPasswordService } from "@/services/auth";
+import { toast } from "sonner";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ResetPasswordSchema } from "@/lib/validations/auth";
 
 export default function ResetPassword() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { email, code } = location.state || {};
+
   const form = useForm({
     resolver: zodResolver(ResetPasswordSchema),
     defaultValues: {
@@ -31,9 +36,29 @@ export default function ResetPassword() {
     },
   });
 
-  function onSubmit(values) {
-    console.log(values);
-    navigate("/login");
+  async function onSubmit(values) {
+    if (!email) {
+      toast.error("بيانات غير مكتملة، يرجى إعادة طلب تغيير كلمة المرور");
+      return;
+    }
+
+    try {
+      await resetPasswordService({
+        email,
+        otp: code, // Include code if API requires it, or token if provided in state
+        password: values.password,
+      });
+
+      toast.success("تم تغيير كلمة المرور بنجاح");
+      navigate("/login");
+    } catch (error) {
+      console.error(error);
+      let errorMessage = "حدث خطأ أثناء تغيير كلمة المرور";
+      if (typeof error === "string") {
+        errorMessage = error;
+      }
+      toast.error(errorMessage);
+    }
   }
 
   return (

@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/form";
 import { verifySchema } from "@/lib/validations/auth";
 import { toast } from "sonner";
+import { verifyOTPService, resendCodeService } from "@/services/auth";
 
 function Verify() {
   const [searchParams] = useSearchParams();
@@ -47,24 +48,24 @@ function Verify() {
 
   const onSubmit = async (data) => {
     try {
-      // هنا حط الـ API call الحقيقي
-      // const res = await verifyEmail({ email, code: data.code });
-
-      // مثال مؤقت
-      await new Promise((resolve, reject) => {
-        setTimeout(() => {
-          if (data.code === "123456") {
-            resolve();
-          } else {
-            reject(new Error("الكود غير صحيح"));
-          }
-        }, 1000);
-      });
+      const res = await verifyOTPService({ email, otp: data.code });
 
       toast.success("تم التحقق من بريدك الإلكتروني بنجاح!");
-      setTimeout(() => navigate("/reset-password"), 1500);
+      // Pass response (which might contain a token) and email to the next page
+      setTimeout(
+        () =>
+          navigate("/reset-password", {
+            state: { email, code: data.code, ...res },
+          }),
+        1500
+      );
     } catch (error) {
-      toast.error(error.message || "فشل التحقق، حاول مرة أخرى");
+      console.error(error);
+      const errorMessage =
+        typeof error === "string"
+          ? error
+          : "كود التحقق غير صحيح أو انتهت صلاحيته";
+      toast.error(errorMessage);
       form.setError("code", { message: "الكود غير صحيح" });
       inputRef.current?.focus();
     }
@@ -72,11 +73,12 @@ function Verify() {
 
   const handleResend = async () => {
     try {
-      // await resendVerificationCode(email);
+      await resendCodeService({ email });
       toast.success("تم إرسال الكود مرة أخرى");
       form.reset();
       inputRef.current?.focus();
-    } catch {
+    } catch (error) {
+      console.error(error);
       toast.error("فشل إرسال الكود، حاول مرة أخرى");
     }
   };

@@ -21,9 +21,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { forgotPasswordSchema } from "@/lib/validations/auth";
+import { toast } from "sonner";
+import { userStore } from "@/store/userStore";
 
 function ForgotPassword() {
   const navigate = useNavigate();
+  const { forgotPassword: sendForgotPassData } = userStore();
   const form = useForm({
     resolver: zodResolver(forgotPasswordSchema),
     defaultValues: {
@@ -31,10 +34,24 @@ function ForgotPassword() {
     },
   });
 
-  const onSubmit = (data) => {
-    // TODO: Add forgot password logic
-    console.log("Forgot Password:", data);
-    navigate("/verify");
+  const onSubmit = async (data) => {
+    try {
+      await sendForgotPassData(data);
+      toast.success("تم إرسال رابط إعادة التعيين إلى بريدك الإلكتروني");
+      navigate(`/verify?email=${data.email}`);
+    } catch (error) {
+      console.error(error);
+      let errorMessage = "حدث خطأ أثناء إرسال الرابط";
+
+      if (typeof error === "string") {
+        if (error.includes("User not found")) {
+          errorMessage = "البريد الإلكتروني غير مسجل";
+        } else {
+          errorMessage = error;
+        }
+      }
+      toast.error(errorMessage);
+    }
   };
 
   return (
