@@ -7,10 +7,7 @@ import ForgotPassword from "./pages/auth/ForgotPassword";
 import Verify from "./pages/auth/Verify";
 import ResetPassword from "./pages/auth/reset-password";
 import Home from "./pages/Home";
-<<<<<<< HEAD
 import Dashboard from "./pages/Dashboard";
-=======
->>>>>>> 34b7c5c4f8d5ec8c8ee784b833cf523e6cd16401
 
 import Pharmacy from "./pages/pharmacy/category/pharmacy-category";
 import CategorySlug from "./pages/pharmacy/category/categorySlug";
@@ -19,30 +16,18 @@ import NavBar from "./components/NavBar";
 import Cart from "./pages/pharmacy/Cart";
 import ProtectedRoute from "./components/ProtectedRoute";
 import PublicRoute from "./components/PublicRoute";
-<<<<<<< HEAD
+
 import { userStore } from "./store/userStore.js";
 
 function App() {
-   const { isLoggin } = userStore();
+  const { isLoggin } = userStore();
   return (
     <BrowserRouter>
       <Toaster richColors position="bottom-right" />
-      {isLoggin && < NavBar />}
-      <Routes>
-        {/* Authentication Routes - accessible only if NOT logged in */}
-        {/* <Route element={<PublicRoute />}> */}
-        <Route >
-=======
-
-function App() {
-  return (
-    <BrowserRouter>
-      <NavBar />
-      <Toaster richColors position="bottom-right" />
+      {isLoggin && <NavBar />}
       <Routes>
         {/* Authentication Routes - accessible only if NOT logged in */}
         <Route element={<PublicRoute />}>
->>>>>>> 34b7c5c4f8d5ec8c8ee784b833cf523e6cd16401
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
@@ -54,10 +39,8 @@ function App() {
 
         <Route element={<ProtectedRoute />}>
           <Route path="/home" element={<Home />} />
-<<<<<<< HEAD
           <Route path="/dashboard" element={<Dashboard />} />
-=======
->>>>>>> 34b7c5c4f8d5ec8c8ee784b833cf523e6cd16401
+
           <Route path="/cart" element={<Cart />} />
 
           {/* Pharmacy Routes */}
