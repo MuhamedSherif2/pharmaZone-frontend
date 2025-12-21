@@ -1,16 +1,25 @@
 import { IoMenu } from "react-icons/io5";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+<<<<<<< HEAD
 import { userStore } from "@/store/userStore";
 
 function NavBar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const { isLoggin } = userStore();
+=======
+
+function NavBar() {
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+>>>>>>> 34b7c5c4f8d5ec8c8ee784b833cf523e6cd16401
 
     const links = [
         { id: 1, name: 'الرئيسية', link: '/' },
         { id: 2, name: 'المنتجات', link: '/pharmacy/category' },
+<<<<<<< HEAD
         ...(isLoggin ? [{ id: 6, name: 'لوحة التحكم', link: '/dashboard' }] : []),
+=======
+>>>>>>> 34b7c5c4f8d5ec8c8ee784b833cf523e6cd16401
         { id: 3, name: 'من نحن', link: '/about' },
         { id: 4, name: 'السلة', link: '/cart' },
         { id: 5, name: 'اتصل بنا', link: '/contact' }
