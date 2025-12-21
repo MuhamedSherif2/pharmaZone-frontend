@@ -110,11 +110,7 @@ export const productsByCategory = {
       id: "pc-2",
       name: "غسول وجه",
       price: "30.00 ج",
-<<<<<<< HEAD
-      image: "/image/MOBILESECTION2-1765971034.jpg",
-=======
       image: "https://placehold.co/600x400?text=Face+Wash",
->>>>>>> 34b7c5c4f8d5ec8c8ee784b833cf523e6cd16401
       description: "ينظف البشرة بعمق ويزيل الشوائب. لا يسبب الجفاف.",
       details: "مناسب لجميع أنواع البشرة. يستخدم صباحاً ومساءً.",
     },
