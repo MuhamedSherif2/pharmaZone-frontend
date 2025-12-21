@@ -164,7 +164,7 @@ export const productsByCategory = {
       description: "تحمي من التسلخات. تمتص الرطوبة الزائدة.",
       details: "تترك بشرة الطفل ناعمة وجافة.",
     },
-  ],
+  ],https://github.com/MuhamedSherif2/pharmaZone-frontend.git
   "medical-equipment": [
     {
       id: "me-1",
